@@ -1,11 +1,11 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class SpawnObstacles : MonoBehaviour
 {
-    public GameObject obstacle;
+    //variables and objects
+    public GameObject obstacle; //the obstacle that is spawned
     public float maxX;
     public float minX;
     public float maxY;
@@ -16,6 +16,7 @@ public class SpawnObstacles : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //checks if enough time has passed between spawns
         if (Time.time > spawnTime)
         {
             Spawn();
@@ -25,9 +26,13 @@ public class SpawnObstacles : MonoBehaviour
 
     void Spawn()
     {
-        float randomX = UnityEngine.Random.Range(minX, maxX);
-        float randomY = UnityEngine.Random.Range(minY, maxY);
+        //Picks random x and y values from given range
+        float randomX = Random.Range(minX, maxX);
+        float randomY = Random.Range(minY, maxY);
 
-        Instantiate(obstacle, transform.position + new Vector3(randomX, randomY, 0), transform.rotation);
+        GameObject spawnedObstacle = Instantiate(obstacle, transform.position + new Vector3(randomX, randomY, 0), transform.rotation);
+
+        // Destroy the spawned object after 10 seconds
+        Destroy(spawnedObstacle, 10f);
     }
 }

@@ -4,25 +4,27 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public float playerSpeed;
-    private Rigidbody2D rb;
-    private Vector2 playerDirection;
+    //Variables
+    public float jumpSpeed = 10f; //jump force
+    public Transform groundCheck; //groundCheck object
+    public float groundCheckRadius; //radious of groundCheck circle
+    public LayerMask groundLayer; //layer for ground objects
+    private bool isGrounded; //determines if player is on ground
+    private Rigidbody2D rb; //rigid body for physics
 
-    // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        float directionY = Input.GetAxisRaw("Vertical");
-        playerDirection = new Vector2(0, directionY).normalized;
-    }
+        //set value of isGrounded based on overlap from circle
+        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
 
-    private void FixedUpdate()
-    {
-        rb.velocity = new Vector2(0, playerDirection.y * playerSpeed);
+        if (Input.GetButtonDown("Jump") && isGrounded) //jump button pressed and player on ground
+        {
+            rb.velocity = new Vector2(rb.velocity.x, jumpSpeed); //make player jumps
+        }
     }
 }
