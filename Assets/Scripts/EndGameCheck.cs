@@ -16,7 +16,7 @@ public class EndGameCheck : MonoBehaviour
         }
     }
 
-    void EndGame()
+    public void EndGame()
     {
         //Set the gameOver flag to prevent multiple triggers
         gameOver = true;
