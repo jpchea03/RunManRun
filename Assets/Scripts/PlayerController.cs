@@ -32,10 +32,16 @@ public class PlayerController : MonoBehaviour
 
     bool isjump = false;
 
+    public AudioClip jump;
+    public AudioClip run;
+
+    public AudioSource audioSource;
+
     //Start is called before the first frame update
     void Start()
     {
         animator = this.GetComponent<Animator>();
+        audioSource = this.GetComponent<AudioSource>();
     }
 
     void Update()
@@ -97,6 +103,7 @@ public class PlayerController : MonoBehaviour
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("Player_running"))
         {
             _isPlaying_run = true;
+            playRunAudio();
         }
         else
         {
@@ -106,6 +113,7 @@ public class PlayerController : MonoBehaviour
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("Player_Jumping"))
         {
             _isPlaying_jump = true;
+            playJumpAudio();
         }
         else
         {
@@ -154,6 +162,18 @@ public class PlayerController : MonoBehaviour
             canDoubleJump = false;
             changeState(STATE_RUN);
         }
+    }
+
+    public void playJumpAudio()
+    {
+        audioSource.clip = jump;
+        audioSource.Play();
+    }
+
+    public void playRunAudio()
+    {
+        audioSource.clip = run;
+        audioSource.Play();
     }
 
 }
