@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public float walkSpeed = 1;
+    public float walkSpeed = 1f;
+    public float normalJumpForce = 600f;
+    public float doubleJumpForce = 600f;
+
     private bool _isGrounded = true;
 
     Animator animator;
@@ -23,6 +26,11 @@ public class PlayerController : MonoBehaviour
     float slideTimer = 0f; //Timer for tracking slide duration
     float maxSlideTime = 0.6f; //Maximum duration of the slide
 
+    bool canDoubleJump = false; //Flag to track if the player can double jump
+    float doubleJumpCooldown = 0.2f; //Cooldown duration for double jump
+    float lastJumpTime = 0f; //Time of the last jump
+
+    bool isjump = false;
 
     //Start is called before the first frame update
     void Start()
@@ -30,20 +38,42 @@ public class PlayerController : MonoBehaviour
         animator = this.GetComponent<Animator>();
     }
 
+    void Update()
+    {
+        if (Input.GetKeyDown("up"))
+        {
+            isjump = true;
+        }
+    }
+
     //Update is called once per frame
     void FixedUpdate()
     {
-        if (Input.GetKey("up") && !_isPlaying_slide)
+        if (isjump && !_isPlaying_slide)
         {
             if (_isGrounded)
             {
                 _isGrounded = false;
-                GetComponent<Rigidbody2D>().AddForce(new Vector2(0, 600)); //simple jump code using unity physics
+                GetComponent<Rigidbody2D>().AddForce(new Vector2(0, normalJumpForce)); //simple jump code using unity physics
                 changeState(STATE_JUMP);
+                lastJumpTime = Time.time; //Update last jump time
+                
+                canDoubleJump = true; 
+                isjump = false;
             }
+            else if (canDoubleJump && Time.time - lastJumpTime > doubleJumpCooldown) //Check for double jump condition
+            {
+                _isGrounded = false;
+                GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, 0); //reset vertical velocity
+                GetComponent<Rigidbody2D>().AddForce(new Vector2(0, doubleJumpForce)); //Apply double jump force
+                changeState(STATE_JUMP);
+                lastJumpTime = Time.time; //Update last jump time
 
+                canDoubleJump = false;
+                isjump = false;
+            }
         }
-        else if (Input.GetKeyDown("down") && !_isPlaying_jump)
+        else if (Input.GetKey("down") && !_isPlaying_jump)
         {
             if (_isGrounded && !sliding) 
             {
@@ -120,6 +150,8 @@ public class PlayerController : MonoBehaviour
         if (coll.gameObject.layer == LayerMask.NameToLayer("Ground") )
         {
             _isGrounded = true;
+            isjump = false;
+            canDoubleJump = false;
             changeState(STATE_RUN);
         }
     }
