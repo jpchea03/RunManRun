@@ -7,7 +7,6 @@ public class EnemyMove : MonoBehaviour
     
 {
 
-    private int direction = -1;
     public float movingSpeed = 1.0f;
     // Start is called before the first frame update
     void Start()
