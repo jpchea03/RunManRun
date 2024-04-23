@@ -11,21 +11,26 @@ public class PlayerController : MonoBehaviour
 
     bool _isPlaying_run = false;
     bool _isPlaying_slide = false;
+    bool _isPlaying_jump = false;
 
-    const int STATE_IDLE = 0;
-    const int STATE_RUN = 1;
-    const int STATE_JUMP = 2;
-    const int STATE_SLIDE = 3;
+    const int STATE_RUN = 0;
+    const int STATE_JUMP = 1;
+    const int STATE_SLIDE = 2;
 
-    string _currentDirection = "left";
-    int _currentAnimationState = STATE_IDLE;
-    // Start is called before the first frame update
+    int _currentAnimationState = STATE_RUN;
+
+    bool sliding = false; //Variable to track if the player is sliding
+    float slideTimer = 0f; //Timer for tracking slide duration
+    float maxSlideTime = 0.6f; //Maximum duration of the slide
+
+
+    //Start is called before the first frame update
     void Start()
     {
         animator = this.GetComponent<Animator>();
     }
 
-    // Update is called once per frame
+    //Update is called once per frame
     void FixedUpdate()
     {
         if (Input.GetKey("up") && !_isPlaying_slide)
@@ -33,35 +38,57 @@ public class PlayerController : MonoBehaviour
             if (_isGrounded)
             {
                 _isGrounded = false;
-                GetComponent<Rigidbody2D>().AddForce(new Vector2(0, 250)); //simple jump code using unity physics
+                GetComponent<Rigidbody2D>().AddForce(new Vector2(0, 600)); //simple jump code using unity physics
                 changeState(STATE_JUMP);
             }
-        }
-        else if (Input.GetKey("down"))
-        {
-            changeState(STATE_SLIDE);
-        }
-        else if (Input.GetKey("right"))
-        {
-            changeDirection("right");
-            transform.Translate(Vector3.left * walkSpeed * Time.deltaTime);
-
-            if (_isGrounded)
-                changeState(STATE_RUN);
 
         }
-        else if (Input.GetKey("left"))
+        else if (Input.GetKeyDown("down") && !_isPlaying_jump)
         {
-            changeDirection("left");
-            transform.Translate(Vector3.left * walkSpeed * Time.deltaTime);
+            if (_isGrounded && !sliding) 
+            {
+                sliding = true;
+                slideTimer = 0f;
+                changeState(STATE_SLIDE);
+            }
+        }
 
-            if (_isGrounded)
-                changeState(STATE_RUN);
+        //Slide timer
+        if (sliding)
+        {
+            slideTimer += Time.deltaTime;
+            if (slideTimer >= maxSlideTime)
+            {
+                sliding = false;
+                changeState(STATE_RUN); 
+            }
+        }
+
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Player_running"))
+        {
+            _isPlaying_run = true;
         }
         else
         {
-            if (_isGrounded)
-                changeState(STATE_IDLE);
+            _isPlaying_run = false;
+        }
+
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Player_Jumping"))
+        {
+            _isPlaying_jump = true;
+        }
+        else
+        {
+            _isPlaying_jump = false;
+        }
+
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Player_sliding"))
+        {
+            _isPlaying_slide = true;
+        }
+        else
+        {
+            _isPlaying_slide = false;
         }
     }
 
@@ -83,10 +110,6 @@ public class PlayerController : MonoBehaviour
             case STATE_JUMP:
                 animator.SetInteger("state", STATE_JUMP);
                 break;
-
-            case STATE_IDLE:
-                animator.SetInteger("state", STATE_IDLE);
-                break;
         }
 
         _currentAnimationState = state;
@@ -94,27 +117,11 @@ public class PlayerController : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D coll)
     {
-        if (coll.gameObject.name == "Floor")
+        if (coll.gameObject.layer == LayerMask.NameToLayer("Ground") )
         {
             _isGrounded = true;
-            changeState(STATE_IDLE);
+            changeState(STATE_RUN);
         }
     }
 
-    void changeDirection(string direction)
-    {
-        if (_currentDirection != direction)
-        {
-            if (direction == "right")
-            {
-                transform.Rotate(0, 180, 0);
-                _currentDirection = "right";
-            }
-            else if (direction == "left")
-            {
-                transform.Rotate(0, -180, 0);
-                _currentDirection = "left";
-            }
-        }
-    }
 }

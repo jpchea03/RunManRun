@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpawnObstacles : MonoBehaviour
+public class SpawnEntity : MonoBehaviour
 {
     //variables and objects
     public GameObject obstacle; //the obstacle that is spawned
