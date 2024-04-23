@@ -10,7 +10,6 @@ public class AudioManager : MonoBehaviour
 
     [Header("--------Audio Clip------")]
     public AudioClip background;
-    public AudioClip click;
     public AudioClip run;
     public AudioClip jump;
     public AudioClip crash;
@@ -36,7 +35,25 @@ public class AudioManager : MonoBehaviour
 
         // Initialize and play background music
         musicSource.clip = background;
-        musicSource.loop = true;
+        musicSource.loop = false; // Disable default looping
         musicSource.Play();
+
+        // Start coroutine to check and restart music
+        StartCoroutine(CheckAndRestartMusic());
+    }
+
+    private IEnumerator CheckAndRestartMusic()
+    {
+        while (true)
+        {
+            // Check if the music has stopped playing
+            if (!musicSource.isPlaying)
+            {
+                // Restart the music
+                musicSource.Play();
+            }
+
+            yield return null;
+        }
     }
 }
