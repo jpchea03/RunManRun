@@ -168,7 +168,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 100457192}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 994d1b85af79c0a49b7370f63879b923, type: 3}
+  m_Script: {fileID: 11500000, guid: 8e0c56f71ac48f640abfd51b242cd6b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   scoreText: {fileID: 1699629924}
@@ -217,12 +217,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0de9fe6927cf3248968db63c14254d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  obstacle: {fileID: 303687309688709369, guid: 250f6eee09a3bab42a87efbbcd4325e7, type: 3}
+  obstaclePrefab: {fileID: 303687309688709369, guid: 250f6eee09a3bab42a87efbbcd4325e7, type: 3}
+  enemyPrefab: {fileID: 1138837790353409101, guid: 9ce0041ce10940a4d9aaeb3ab7845c15, type: 3}
   maxX: 2
   minX: 0
   maxY: 3
   minY: 1
-  timeBetweenSpawn: 4
+  timeBetweenObstacleSpawn: 4
+  enemyspawnProbability: 0.5
 --- !u!114 &116524928
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -235,12 +237,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0de9fe6927cf3248968db63c14254d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  obstacle: {fileID: 9043168791078912670, guid: 687b14825449dbb48b821f5b1b1bf9af, type: 3}
+  obstaclePrefab: {fileID: 9043168791078912670, guid: 687b14825449dbb48b821f5b1b1bf9af, type: 3}
+  enemyPrefab: {fileID: 1138837790353409101, guid: 9ce0041ce10940a4d9aaeb3ab7845c15, type: 3}
   maxX: 2
   minX: 0
   maxY: 10
   minY: 6
-  timeBetweenSpawn: 3
+  timeBetweenObstacleSpawn: 3
+  enemyspawnProbability: 0.5
 --- !u!1 &218342332
 GameObject:
   m_ObjectHideFlags: 0
@@ -635,6 +639,7 @@ GameObject:
   - component: {fileID: 1069639611}
   - component: {fileID: 1069639612}
   - component: {fileID: 1069639613}
+  - component: {fileID: 1069639614}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -816,6 +821,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   walkSpeed: 3
+  normalJumpForce: 600
+  doubleJumpForce: 600
 --- !u!114 &1069639613
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -829,6 +836,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   endGameYThreshold: -8
+--- !u!114 &1069639614
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1069639604}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a91836f0969a1df4db287b9b4f8a84d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1190078511
 GameObject:
   m_ObjectHideFlags: 0
