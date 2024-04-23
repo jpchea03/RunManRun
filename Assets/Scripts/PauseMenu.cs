@@ -7,23 +7,42 @@ using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour
 {
-    public GameObject pauseMenu;
-    void Start()
+    [SerializeField] private GameObject pauseMenuUI;
+    [SerializeField] private bool isPaused;
+
+
+    private void Update()
     {
-        // Closes pauseMenu on game start
-        ClosePauseMenu();
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            isPaused = !isPaused;
+        }
+
+        if (isPaused)
+        {
+            ActivateMenu();
+        }
+        else
+        {
+            DeactivateMenu();
+        }
     }
 
-    //Closes pause menu
-    public void ClosePauseMenu()
+    void ActivateMenu()
     {
-        // Deactivate the pause menu UI
-        pauseMenu.SetActive(false);
+        Time.timeScale = 0;
+        pauseMenuUI.SetActive(true);
     }
 
+    public void DeactivateMenu()
+    {
+        Time.timeScale = 1;
+        pauseMenuUI.SetActive(false);
+        isPaused = false;
+    }
     //Changes scene to main menu
     public void QuitToMenu()
     {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene("Menu");
     }
 }

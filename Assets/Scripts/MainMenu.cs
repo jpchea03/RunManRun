@@ -10,7 +10,8 @@ public class MainMenu : MonoBehaviour
     //Plays the first scene
     public void PlayGame()
     {
-        SceneManager.LoadScene(1); //Plays the first scene using scene manager
+        UpdateScore.ChangeScore(0);
+        SceneManager.LoadScene("Scene1"); //Plays the first scene using scene manager
     }
 
     //Quits the game

@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
 
     bool _isPlaying_run = false;
     bool _isPlaying_slide = false;
+    bool _isPlaying_jump = false;
 
     const int STATE_IDLE = 0;
     const int STATE_RUN = 1;
@@ -19,13 +20,19 @@ public class PlayerController : MonoBehaviour
 
     string _currentDirection = "left";
     int _currentAnimationState = STATE_IDLE;
-    // Start is called before the first frame update
+
+    bool sliding = false; //Variable to track if the player is sliding
+    float slideTimer = 0f; //Timer for tracking slide duration
+    float maxSlideTime = 0.2f; //Maximum duration of the slide
+
+
+    //Start is called before the first frame update
     void Start()
     {
         animator = this.GetComponent<Animator>();
     }
 
-    // Update is called once per frame
+    //Update is called once per frame
     void FixedUpdate()
     {
         if (Input.GetKey("up") && !_isPlaying_slide)
@@ -33,24 +40,37 @@ public class PlayerController : MonoBehaviour
             if (_isGrounded)
             {
                 _isGrounded = false;
-                GetComponent<Rigidbody2D>().AddForce(new Vector2(0, 250)); //simple jump code using unity physics
+                GetComponent<Rigidbody2D>().AddForce(new Vector2(0, 600)); //simple jump code using unity physics
                 changeState(STATE_JUMP);
             }
+
+            float horizontalInput = Input.GetAxisRaw("Horizontal");
+            if (horizontalInput != 0)
+            {
+                //Apply horizontal force while jumping
+                float jumpHorizontalForce = 5f; 
+                GetComponent<Rigidbody2D>().AddForce(new Vector2(horizontalInput * jumpHorizontalForce, 0));
+            }
         }
-        else if (Input.GetKey("down"))
+        else if (Input.GetKeyDown("down") && !_isPlaying_jump)
         {
-            changeState(STATE_SLIDE);
+            if (_isGrounded && !sliding) 
+            {
+                sliding = true;
+                slideTimer = 0f;
+                changeState(STATE_SLIDE);
+            }
         }
-        else if (Input.GetKey("right"))
+        else if (Input.GetKey("right") && !_isPlaying_slide)
         {
             changeDirection("right");
-            transform.Translate(Vector3.left * walkSpeed * Time.deltaTime);
+            transform.Translate(Vector3.right * walkSpeed * Time.deltaTime);
 
             if (_isGrounded)
                 changeState(STATE_RUN);
 
         }
-        else if (Input.GetKey("left"))
+        else if (Input.GetKey("left") && !_isPlaying_slide)
         {
             changeDirection("left");
             transform.Translate(Vector3.left * walkSpeed * Time.deltaTime);
@@ -62,6 +82,58 @@ public class PlayerController : MonoBehaviour
         {
             if (_isGrounded)
                 changeState(STATE_IDLE);
+        }
+
+
+        //Slide timer
+        if (sliding)
+        {
+            slideTimer += Time.deltaTime;
+            if (slideTimer >= maxSlideTime)
+            {
+                sliding = false;
+                changeState(STATE_IDLE); 
+            }
+        }
+
+        //Horizontal movement while sliding
+        if (sliding)
+        {
+            //Define the slide distance
+            float slideDistance = 0.2f; // Adjust as needed
+
+            //Get the current horizontal input
+            float horizontalInput = Input.GetAxisRaw("Horizontal");
+
+            //Move the character horizontally while sliding
+            transform.Translate(Vector3.right * horizontalInput * slideDistance);
+        }
+
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Player_running"))
+        {
+            _isPlaying_run = true;
+        }
+        else
+        {
+            _isPlaying_run = false;
+        }
+
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Player_Jumping"))
+        {
+            _isPlaying_jump = true;
+        }
+        else
+        {
+            _isPlaying_jump = false;
+        }
+
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Player_sliding"))
+        {
+            _isPlaying_slide = true;
+        }
+        else
+        {
+            _isPlaying_slide = false;
         }
     }
 
@@ -94,7 +166,7 @@ public class PlayerController : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D coll)
     {
-        if (coll.gameObject.name == "Floor")
+        if (coll.gameObject.name == "Floor" || coll.gameObject.CompareTag("obstacle"))
         {
             _isGrounded = true;
             changeState(STATE_IDLE);
@@ -107,12 +179,12 @@ public class PlayerController : MonoBehaviour
         {
             if (direction == "right")
             {
-                transform.Rotate(0, 180, 0);
+                transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
                 _currentDirection = "right";
             }
             else if (direction == "left")
             {
-                transform.Rotate(0, -180, 0);
+                transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
                 _currentDirection = "left";
             }
         }
