@@ -30,9 +30,8 @@ public class SpawnEntity : MonoBehaviour
     void SpawnObstacle()
     {
         //Picks random x and y values from given range
-        float randomX = Random.Range(minX, maxX);
-        float randomY = Random.Range(minY, maxY);
-       
+        float randomX = UnityEngine.Random.Range(minX, maxX);
+        float randomY = UnityEngine.Random.Range(minY, maxY);
 
         //Instantiate the obstacle at a random position
         GameObject spawnedObstacle = Instantiate(obstaclePrefab, transform.position + new Vector3(randomX, randomY, 0), Quaternion.identity);

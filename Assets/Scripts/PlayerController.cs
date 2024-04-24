@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    private GameObject character;
-    public BoxCollider2D normalCollider;
-    public BoxCollider2D slideCollider;
-    public float walkSpeed = 1;
+    public float walkSpeed = 1f;
+    public float normalJumpForce = 600f;
+    public float doubleJumpForce = 600f;
+
     private bool _isGrounded = true;
 
     Animator animator;
@@ -24,7 +24,7 @@ public class PlayerController : MonoBehaviour
 
     bool sliding = false; //Variable to track if the player is sliding
     float slideTimer = 0f; //Timer for tracking slide duration
-    float maxSlideTime = 0.9f; //Maximum duration of the slide
+    float maxSlideTime = 0.6f; //Maximum duration of the slide
 
     bool canDoubleJump = false; //Flag to track if the player can double jump
     float doubleJumpCooldown = 0.2f; //Cooldown duration for double jump
@@ -40,8 +40,6 @@ public class PlayerController : MonoBehaviour
     //Start is called before the first frame update
     void Start()
     {
-        normalCollider.enabled = true;
-        slideCollider.enabled = false;
         animator = this.GetComponent<Animator>();
         audioSource = this.GetComponent<AudioSource>();
     }
@@ -88,21 +86,16 @@ public class PlayerController : MonoBehaviour
                 sliding = true;
                 slideTimer = 0f;
                 changeState(STATE_SLIDE);
-
             }
         }
 
         //Slide timer
         if (sliding)
         {
-            normalCollider.enabled = false;
-            slideCollider.enabled = true;
             slideTimer += Time.deltaTime;
             if (slideTimer >= maxSlideTime)
             {
                 sliding = false;
-                normalCollider.enabled = true;
-                slideCollider.enabled = false;
                 changeState(STATE_RUN); 
             }
         }
@@ -162,23 +155,12 @@ public class PlayerController : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D coll)
     {
-        character = GameObject.FindGameObjectWithTag("Player");
-
-        if (coll.gameObject.layer == LayerMask.NameToLayer("Ground"))
+        if (coll.gameObject.layer == LayerMask.NameToLayer("Ground") )
         {
-            if (coll.gameObject.tag == "obstacle" && character.transform.position.y > coll.gameObject.transform.position.y + coll.gameObject.GetComponent<Collider2D>().bounds.size.y/2)
-            {
-                _isGrounded = true;
-                changeState(STATE_RUN);
-            }
-            else { 
-
-
             _isGrounded = true;
             isjump = false;
             canDoubleJump = false;
             changeState(STATE_RUN);
-            }
         }
     }
 

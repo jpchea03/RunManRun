@@ -24,7 +24,7 @@ public class PlayerCollision : MonoBehaviour
         if (collision.gameObject.CompareTag("Enemy"))
         {
             // Handle the collision (e.g., reduce player health, play an effect)
-            //Debug.Log("Player collided with an enemy!");
+            Debug.Log("Player collided with an enemy!");
             // Add your custom logic here
 
             egc.EndGame();
