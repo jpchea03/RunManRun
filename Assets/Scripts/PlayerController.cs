@@ -52,14 +52,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void Update()
-    {
-        if (Input.GetKeyDown("up"))
-        {
-            isjump = true;
-        }
-    }
-
     //Update is called once per frame
     void FixedUpdate()
     {
