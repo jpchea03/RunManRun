@@ -43,6 +43,10 @@ public class PlayerController : MonoBehaviour
         animator = this.GetComponent<Animator>();
         audioSource = this.GetComponent<AudioSource>();
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> parent of 1aeac71 (Revert "Getting everything together")
     void Update()
     {
         if (Input.GetKeyDown("up"))
