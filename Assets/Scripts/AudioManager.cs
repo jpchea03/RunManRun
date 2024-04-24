@@ -1,5 +1,6 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class AudioManager : MonoBehaviour
 {
@@ -9,10 +10,10 @@ public class AudioManager : MonoBehaviour
 
     [Header("--------Audio Clip------")]
     public AudioClip background;
+    public AudioClip run;
     public AudioClip jump;
     public AudioClip crash;
     public AudioClip GameOver;
-    public AudioClip clickSound; // New field for the click sound
 
     // Ensure only one instance of AudioManager exists
     private static AudioManager instance;
@@ -34,13 +35,25 @@ public class AudioManager : MonoBehaviour
 
         // Initialize and play background music
         musicSource.clip = background;
-        musicSource.loop = true;
+        musicSource.loop = false; // Disable default looping
         musicSource.Play();
+
+        // Start coroutine to check and restart music
+        StartCoroutine(CheckAndRestartMusic());
     }
 
-    // Method to play the click sound
-    public void PlayClickSound()
+    private IEnumerator CheckAndRestartMusic()
     {
-        SFXSource.PlayOneShot(clickSound);
+        while (true)
+        {
+            // Check if the music has stopped playing
+            if (!musicSource.isPlaying)
+            {
+                // Restart the music
+                musicSource.Play();
+            }
+
+            yield return null;
+        }
     }
 }
