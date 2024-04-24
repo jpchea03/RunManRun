@@ -32,7 +32,7 @@ public class SpawnBat : MonoBehaviour
 
         float ranChance = Random.Range(1, 10);
 
-        GameObject spawnedEnemy;
+        GameObject spawnedEnemy = null;
 
         if (ranChance <= 5)
         {
@@ -45,11 +45,10 @@ public class SpawnBat : MonoBehaviour
                 if (randomY > 7.0f)
                     spawnedEnemy = Instantiate(enemy, transform.position + new Vector3(randomX + 10f, randomY - 1f, 0), transform.rotation);
             }
-
         }
 
-
         // Destroy the spawned object after 10 seconds
-        Destroy(enemy, 10f);
+        if (spawnedEnemy != null)
+            Destroy(spawnedEnemy, 10f);
     }
 }
