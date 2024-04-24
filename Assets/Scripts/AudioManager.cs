@@ -9,7 +9,6 @@ public class AudioManager : MonoBehaviour
 
     [Header("--------Audio Clip------")]
     public AudioClip background;
-    public AudioClip run;
     public AudioClip jump;
     public AudioClip crash;
     public AudioClip GameOver;
