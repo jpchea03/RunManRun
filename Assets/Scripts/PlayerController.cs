@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public BoxCollider2D normalCollider;
+    public BoxCollider2D slideCollider;
     public float walkSpeed = 1;
     private bool _isGrounded = true;
 
@@ -27,6 +29,8 @@ public class PlayerController : MonoBehaviour
     //Start is called before the first frame update
     void Start()
     {
+        normalCollider.enabled = true;
+        slideCollider.enabled = false;
         animator = this.GetComponent<Animator>();
     }
 
@@ -50,16 +54,21 @@ public class PlayerController : MonoBehaviour
                 sliding = true;
                 slideTimer = 0f;
                 changeState(STATE_SLIDE);
+
             }
         }
 
         //Slide timer
         if (sliding)
         {
+            normalCollider.enabled = false;
+            slideCollider.enabled = true;
             slideTimer += Time.deltaTime;
             if (slideTimer >= maxSlideTime)
             {
                 sliding = false;
+                normalCollider.enabled = true;
+                slideCollider.enabled = false;
                 changeState(STATE_RUN); 
             }
         }
