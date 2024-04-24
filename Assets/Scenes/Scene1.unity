@@ -237,7 +237,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   obstacle: {fileID: 9043168791078912670, guid: 687b14825449dbb48b821f5b1b1bf9af, type: 3}
   enemy: {fileID: 3576998865377010393, guid: c819bb8b04bfa784b8f4b4e3ac20ec98, type: 3}
-  maxX: 2
+  maxX: 3
   minX: 0
   maxY: 9
   minY: 7
