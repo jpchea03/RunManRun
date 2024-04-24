@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    private GameObject character;
     public BoxCollider2D normalCollider;
     public BoxCollider2D slideCollider;
     public float walkSpeed = 1;
@@ -23,7 +24,7 @@ public class PlayerController : MonoBehaviour
 
     bool sliding = false; //Variable to track if the player is sliding
     float slideTimer = 0f; //Timer for tracking slide duration
-    float maxSlideTime = 0.6f; //Maximum duration of the slide
+    float maxSlideTime = 0.9f; //Maximum duration of the slide
 
 
     //Start is called before the first frame update
@@ -126,10 +127,21 @@ public class PlayerController : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D coll)
     {
-        if (coll.gameObject.layer == LayerMask.NameToLayer("Ground") )
+        character = GameObject.FindGameObjectWithTag("Player");
+
+        if (coll.gameObject.layer == LayerMask.NameToLayer("Ground"))
         {
+            if (coll.gameObject.tag == "obstacle" && character.transform.position.y > coll.gameObject.transform.position.y + coll.gameObject.GetComponent<Collider2D>().bounds.size.y/2)
+            {
+                _isGrounded = true;
+                changeState(STATE_RUN);
+            }
+            else { 
+
+
             _isGrounded = true;
             changeState(STATE_RUN);
+            }
         }
     }
 
