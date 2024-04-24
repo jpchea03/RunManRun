@@ -317,7 +317,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   obstaclePrefab: {fileID: 303687309688709369, guid: 250f6eee09a3bab42a87efbbcd4325e7, type: 3}
-  enemyPrefab: {fileID: 1138837790353409101, guid: 9dcd4a15a981f7d478e085d410b46221, type: 3}
+  enemyPrefab: {fileID: 1138837790353409101, guid: 9ce0041ce10940a4d9aaeb3ab7845c15, type: 3}
   maxX: 2
   minX: 0
   maxY: 3
