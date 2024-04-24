@@ -43,15 +43,6 @@ public class PlayerController : MonoBehaviour
         animator = this.GetComponent<Animator>();
         audioSource = this.GetComponent<AudioSource>();
     }
-
-    void Update()
-    {
-        if (Input.GetKeyDown("up"))
-        {
-            isjump = true;
-        }
-    }
-
     void Update()
     {
         if (Input.GetKeyDown("up"))
