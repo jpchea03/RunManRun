@@ -1019,9 +1019,6 @@ MonoBehaviour:
   walkSpeed: 3
   normalJumpForce: 600
   doubleJumpForce: 600
-  jump: {fileID: 8300000, guid: 46e26e5021fa6574bbc7af21247b52ed, type: 3}
-  run: {fileID: 8300000, guid: f76e0d3840eb3e04b8de9ab15a48434e, type: 3}
-  audioSource: {fileID: 0}
 --- !u!114 &1069639613
 MonoBehaviour:
   m_ObjectHideFlags: 0
