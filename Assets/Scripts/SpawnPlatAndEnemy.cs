@@ -30,8 +30,6 @@ public class SpawnPlatAndEnemy : MonoBehaviour
         //Picks random x and y values from given range
         float randomX = Random.Range(minX, maxX);
         float randomY = Random.Range(minY, maxY);
-        //Random num = new Random();
-        //num.Next(1,10);
 
         float ranChance = Random.Range(1, 10);
 
@@ -45,7 +43,11 @@ public class SpawnPlatAndEnemy : MonoBehaviour
             if (ranChance <= 2)
                 spawnedEnemy = Instantiate(enemy, transform.position + new Vector3(randomX + 10f, randomY + ranChance, 0), transform.rotation);
             else
-                spawnedEnemy = Instantiate(enemy, transform.position + new Vector3(randomX + 10f, randomY - 1f, 0), transform.rotation);
+            {
+                if (randomY>7.0f)
+                    spawnedEnemy = Instantiate(enemy, transform.position + new Vector3(randomX + 10f, randomY - 1f, 0), transform.rotation);
+            }
+                
         }
 
 

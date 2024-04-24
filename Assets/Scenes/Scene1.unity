@@ -239,8 +239,8 @@ MonoBehaviour:
   enemy: {fileID: 3576998865377010393, guid: c819bb8b04bfa784b8f4b4e3ac20ec98, type: 3}
   maxX: 2
   minX: 0
-  maxY: 10
-  minY: 6
+  maxY: 9
+  minY: 7
   timeBetweenSpawn: 2
 --- !u!1 &218342332
 GameObject:
